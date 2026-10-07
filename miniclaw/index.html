@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MiniClaw</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2efeb;--sf:#fff;--rz:#f6f4f1;--line:#e4dfd8;--ink:#17181c;--mute:#6c7079;--acc:#e5432d;--accink:#fff;--ok:#18864f;--warn:#a86a00;--bad:#c42b1c;--tool:#fff6e3;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c0e11;--sf:#13171c;--rz:#1a1f26;--line:#262d36;--ink:#e9edf2;--mute:#8a95a3;--acc:#ff6a55;--accink:#1a0805;--ok:#3ecf8e;--warn:#f5b14a;--bad:#ff7b6b;--tool:#221c10}}
+:root[data-theme="dark"]{--bg:#0c0e11;--sf:#13171c;--rz:#1a1f26;--line:#262d36;--ink:#e9edf2;--mute:#8a95a3;--acc:#ff6a55;--accink:#1a0805;--ok:#3ecf8e;--warn:#f5b14a;--bad:#ff7b6b;--tool:#221c10}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 "Instrument Sans",system-ui,sans-serif;display:flex;flex-direction:column;gap:10px;padding:10px}
+header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:6px 6px 0}
+.logo{font-weight:700;font-size:18px;letter-spacing:-.02em;display:flex;gap:8px;align-items:center}
+.logo i{font-style:normal;background:var(--acc);color:var(--accink);width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:17px}
+.pill{font-size:12px;border:1px solid var(--line);background:var(--sf);border-radius:99px;padding:3px 10px;color:var(--mute);display:flex;gap:6px;align-items:center}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.sp{flex:1}
+.sw{display:flex;gap:8px;align-items:center;font-size:13px;cursor:pointer;background:var(--sf);border:1px solid var(--line);border-radius:99px;padding:4px 12px 4px 8px}
+.sw input{accent-color:var(--acc);width:16px;height:16px}
+main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:10px}
+@media(max-width:900px){main{grid-template-columns:1fr;grid-template-rows:72vh auto}}
+.card{background:var(--sf);border:1px solid var(--line);border-radius:18px;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+#msgs{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:80%;padding:10px 14px;border-radius:16px;white-space:pre-wrap;word-wrap:break-word}
+.me{align-self:flex-end;background:var(--acc);color:var(--accink);border-bottom-right-radius:4px}
+.bot{align-self:flex-start;background:var(--rz);border-bottom-left-radius:4px}
+.typing{color:var(--mute);animation:p 1.1s infinite}
+@keyframes p{50%{opacity:.35}}
+.tc{align-self:flex-start;width:min(430px,92%);background:var(--tool);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-size:13px}
+.tc.ask{border-color:var(--bad)}
+.tc .r{display:flex;gap:8px;align-items:center}
+.tc b{font-family:"JetBrains Mono",monospace;font-weight:500}
+.tc code{display:block;margin-top:4px;color:var(--mute);font:12px "JetBrains Mono",monospace;word-break:break-all}
+.st{margin-left:auto;font-size:11px;padding:1px 8px;border-radius:99px;border:1px solid currentColor}
+.st.run{color:var(--warn)}.st.ok{color:var(--ok)}.st.bad{color:var(--bad)}
+.apq{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+.apq p{margin:0 0 8px}
+.apq button{font:inherit;font-size:13px;border-radius:9px;padding:5px 14px;cursor:pointer;border:1px solid var(--line);background:var(--sf);color:var(--ink);margin-right:8px}
+.apq .y{background:var(--ok);border-color:var(--ok);color:var(--bg);font-weight:600}
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 18px 10px}
+.chips button{border:1px solid var(--line);background:var(--rz);color:var(--mute);border-radius:99px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer}
+.chips button:hover,button:focus-visible{border-color:var(--acc);color:var(--ink);outline:none}
+form{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+form input{flex:1;min-width:0;border:1px solid var(--line);background:var(--rz);color:var(--ink);border-radius:14px;padding:11px 14px;font:inherit}
+form input:focus-visible{outline:2px solid var(--acc)}
+.send{border:0;background:var(--acc);color:var(--accink);border-radius:14px;padding:0 20px;font:inherit;font-weight:600;cursor:pointer}
+.tabs{display:flex;border-bottom:1px solid var(--line)}
+.tabs button{flex:1;border:0;background:none;color:var(--mute);font:inherit;font-size:14px;padding:12px;cursor:pointer;border-bottom:2px solid transparent}
+.tabs button.on{color:var(--ink);border-bottom-color:var(--acc);font-weight:600}
+.pane{flex:1;overflow-y:auto;padding:14px 16px;display:none}
+.pane.on{display:block}
+.pane h4{margin:14px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+.pane h4:first-child{margin-top:0}
+pre{margin:0;background:var(--rz);border:1px solid var(--line);border-radius:10px;padding:10px;font:12px/1.6 "JetBrains Mono",monospace;white-space:pre-wrap;color:var(--ink)}
+#log div{font:12px/1.7 "JetBrains Mono",monospace;color:var(--mute)}
+.sk{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+.sk input{accent-color:var(--acc);margin-top:3px}
+.sk small{display:block;color:var(--mute)}
+.sk .rk{color:var(--bad)}
+ul{margin:0;padding-left:18px;font-size:13px;color:var(--mute)}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><i>🦞</i>MiniClaw</div>
+  <span class="pill"><span class="dot"></span>Gateway çevrimiçi</span>
+  <span class="pill" id="mode">Kural modu</span>
+  <span class="sp"></span>
+  <label class="sw"><input type="checkbox" id="ap" checked>Onay modu</label>
+</header>
+<main>
+  <section class="card">
+    <div id="msgs" aria-live="polite"></div>
+    <div class="chips" id="chips"></div>
+    <form id="f"><input id="in" autocomplete="off" placeholder="Ajana bir şey yaz…"><button class="send">Gönder</button></form>
+  </section>
+  <aside class="card">
+    <div class="tabs" id="tabs"><button class="on" data-p="p1">Etkinlik</button><button data-p="p2">Hafıza</button><button data-p="p3">Yetenekler</button></div>
+    <div class="pane on" id="p1"><h4>Ajan günlüğü</h4><div id="log"><div>Henüz işlem yok.</div></div></div>
+    <div class="pane" id="p2"><h4>SOUL.md (kişilik)</h4><pre>Ben MiniClaw'ım.
+Kısa, net, Türkçe konuşurum.
+Riskli işlerde onay almadan hareket etmem.</pre><h4>MEMORIES.md (hafıza)</h4><pre id="mem"></pre><h4>Örnek dosyalar</h4><ul id="files"></ul><h4>Hatırlatıcılar</h4><ul id="rem"></ul></div>
+    <div class="pane" id="p3"><h4>Yetenekler (skills)</h4><div id="skills"></div></div>
+  </aside>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+// ---- Örnek (uydurma) veri: gerçek hesaplara bağlanmıyoruz
+let files=["rapor.docx","fotograf.jpg","sifreler.txt"],notes=["Kullanıcı Samsun'da yaşıyor."],reminders=[];
+const inbox=["Ayşe Hoca: Ödev teslim tarihi 10 Ekim","Kargo: Siparişin yola çıktı","Banka: Ekstren hazır"];
+const events=["Yarın 10:00 – Yazılım Test dersi","Cuma 14:00 – Grup toplantısı"];
+const str={type:"string"};
+// ---- Yetenekler (skills). risky=true: geri alınamaz etki, onay ister
+const skills={
+ takvim_oku:{i:"📅",d:"Takvimdeki etkinlikleri döndürür.",run:()=>events.join("\n")},
+ eposta_oku:{i:"📥",d:"Gelen kutusundaki mailleri döndürür.",run:()=>inbox.join("\n")},
+ eposta_gonder:{i:"✉️",d:"Bir adrese e-posta gönderir.",risky:1,schema:{type:"object",properties:{kime:str,metin:str},required:["kime","metin"]},
+  ask:a=>a.kime+" adresine e-posta gidecek: \""+a.metin+"\"",run:a=>"E-posta gönderildi → "+a.kime},
+ dosya_listele:{i:"🗂",d:"Dosya adlarını listeler.",run:()=>files.join("\n")||"Dosya yok"},
+ dosya_sil:{i:"🗑",d:"Adı verilen dosyayı kalıcı siler.",risky:1,schema:{type:"object",properties:{ad:str},required:["ad"]},
+  ask:a=>a.ad+" kalıcı olarak silinecek.",run:a=>{if(!files.includes(a.ad))throw new Error("Dosya bulunamadı: "+a.ad);files=files.filter(f=>f!==a.ad);return a.ad+" silindi."}},
+ hava:{i:"🌤",d:"Samsun hava durumu (örnek veri).",run:()=>"Samsun: 21°C, parçalı bulutlu"},
+ hafiza_yaz:{i:"🧠",d:"Kullanıcı hakkında kalıcı bir not kaydeder.",schema:{type:"object",properties:{metin:str},required:["metin"]},run:a=>{notes.push(a.metin);return "Hafızaya yazıldı: "+a.metin}},
+ hatirlat:{i:"⏰",d:"Belirli saniye sonra kullanıcıya mesaj atar.",schema:{type:"object",properties:{metin:str,saniye:{type:"number"}},required:["metin","saniye"]},
+  run:a=>{const s=Math.min(Math.max(+a.saniye||5,1),600),r=a.metin+" ("+s+" sn)";reminders.push(r);
+   setTimeout(()=>{reminders=reminders.filter(x=>x!==r);say("⏰ Hatırlatma: "+a.metin,"bot");log("hatırlatma tetiklendi");render()},s*1000);return s+" saniye sonra hatırlatacağım."}}
+};
+Object.values(skills).forEach(s=>s.on=true);
+// ---- Arayüz
+function say(t,c){const d=el("div","m "+c,t);$("msgs").appendChild(d);$("msgs").scrollTop=1e9;return d}
+function log(t){const l=$("log");if(l.querySelector("div")&&l.children.length===1&&l.textContent.startsWith("Henüz"))l.innerHTML="";l.appendChild(el("div",0,new Date().toLocaleTimeString("tr-TR")+"  "+t))}
+function render(){$("mem").textContent=notes.map(n=>"- "+n).join("\n");
+ const li=(id,a,e)=>{$(id).innerHTML="";(a.length?a:[e]).forEach(x=>$(id).appendChild(el("li",0,x)))};li("files",files,"Hiç dosya kalmadı");li("rem",reminders,"Yok")}
+function toolCard(name,args){
+ if(typing){typing.remove();typing=null}
+ const c=el("div","tc"),r=el("div","r"),st=el("span","st run","bekliyor");
+ r.append(el("span",0,skills[name].i),el("b",0,name),st);c.append(r,el("code",0,JSON.stringify(args||{})));
+ $("msgs").appendChild(c);$("msgs").scrollTop=1e9;
+ return {c,set:(t,k)=>{st.textContent=t;st.className="st "+k}}}
+function askOk(card,text){
+ card.c.classList.add("ask");
+ return new Promise(res=>{const q=el("div","apq");q.append(el("p",0,"Onay gerekli: "+text));
+  const y=el("button","y","Onayla"),n=el("button",0,"Reddet");
+  y.onclick=()=>{q.remove();res(true)};n.onclick=()=>{q.remove();res(false)};q.append(y,n);card.c.appendChild(q);$("msgs").scrollTop=1e9})}
+// ---- Yetenek çalıştırıcı: kaydı tutar, riskliyse onay ister, sonra işi yapar
+async function invoke(name,args){
+ const s=skills[name];if(!s||!s.on)throw new Error("Bu yetenek yok ya da kapalı.");
+ args=args||{};const card=toolCard(name,args);log("araç: "+name);
+ if(s.risky&&$("ap").checked){
+  log("onay bekleniyor");card.set("onay bekliyor","run");
+  if(!await askOk(card,s.ask(args))){card.set("reddedildi","bad");log("kullanıcı reddetti");throw new Error("Kullanıcı işlemi reddetti.")}
+  log("kullanıcı onayladı")}
+ else if(s.risky)log("UYARI: onay modu kapalı, risk alındı");
+ card.set("çalışıyor","run");await new Promise(r=>setTimeout(r,350));
+ try{const out=s.run(args);card.set("bitti","ok");log("tamamlandı: "+name);render();return out}
+ catch(e){card.set("hata","bad");throw e}}
+// ---- Planlayıcı 1: gerçek Claude (araç çağırarak). Planlayıcı 2: basit kurallar (yedek)
+let sampleFn=null,typing=null,turns=[];
+const RULES="Sen MiniClaw adlı kişisel yapay zekâ ajanısın. Türkçe, kısa ve net cevap ver. İş yapmak için sana verilen araçları çağır; aracın yoksa uydurma, yapamayacağını söyle. Tüm veriler demo verisidir. Riskli araçlar için onayı arayüz ayrıca alır, sen sadece aracı çağır.";
+const tools=()=>Object.entries(skills).filter(([,s])=>s.on).map(([name,s])=>({name,description:s.d,inputSchema:s.schema||{type:"object",properties:{}},execute:a=>invoke(name,a)}));
+function rulePlan(text){
+ const t=text.toLocaleLowerCase("tr").trim();let m;
+ if((m=t.match(/^(\S+@\S+)\s+mail at\s+(.+)/)))return ["eposta_gonder",{kime:m[1],metin:m[2]}];
+ if(/(mail|e-posta|eposta).*(oku|göster|var mı)|^mailler/.test(t))return ["eposta_oku"];
+ const f=files.find(x=>t.includes(x));
+ if(/sil/.test(t)&&f)return ["dosya_sil",{ad:f}];
+ if(/dosya/.test(t))return ["dosya_listele"];
+ if(/takvim|toplantı|programım/.test(t))return ["takvim_oku"];
+ if(/hava/.test(t))return ["hava"];
+ if((m=t.match(/(\d+)\s*(saniye|sn|dakika|dk)\s*(?:sonra)?\s*(.+?)\s*hatırlat/)))return ["hatirlat",{metin:m[3],saniye:+m[1]*(/^d/.test(m[2])?60:1)}];
+ if((m=t.match(/^not al:?\s*(.+)/)))return ["hafiza_yaz",{metin:m[1]}];
+ return null}
+async function ruleMode(text){
+ const p=rulePlan(text);
+ if(!p){if(typing){typing.remove();typing=null}say("Bunun için bir yeteneğim yok. Yetenekler sekmesine bak.","bot");return}
+ try{say(await invoke(p[0],p[1]),"bot")}catch(e){say(e.message,"bot")}}
+async function send(text){
+ say(text,"me");typing=el("div","m bot typing","düşünüyor…");$("msgs").appendChild(typing);log("mesaj alındı");
+ if(sampleFn){
+  turns.push({role:"user",content:text});turns=turns.slice(-8);while(turns[0].role!=="user")turns.shift();
+  let b=null;
+  try{
+   const input=turns.map((t,i)=>i?t:{role:"user",content:RULES+"\n\nKullanıcı: "+t.content});
+   const r=await sampleFn(input,{tools:tools(),modelTier:"quick",cache:false,onText:({text})=>{
+    if(typing){typing.remove();typing=null}if(!b)b=say("","bot");b.textContent=text;$("msgs").scrollTop=1e9}});
+   if(typing){typing.remove();typing=null}if(!b)b=say("","bot");b.textContent=r.text;turns.push({role:"assistant",content:r.text});log("model cevabı tamamlandı");
+  }catch(e){
+   if(typing){typing.remove();typing=null}turns.pop();
+   if(["not_granted","sampling_disabled","not_declared","capability_disabled","tools_unavailable"].includes(e.code)){
+    sampleFn=null;badge();log("model kullanılamıyor, kural moduna geçildi");typing=el("div","m bot typing","düşünüyor…");$("msgs").appendChild(typing);return ruleMode(text)}
+   if(e.code!=="cancelled")say(e.text||"Bir hata oldu ("+e.code+"). Tekrar dene.","bot")}
+ }else ruleMode(text)}
+function badge(){$("mode").textContent=sampleFn?"Claude modeli":"Kural modu";$("mode").style.color=sampleFn?"var(--ok)":""}
+// ---- Kurulum
+$("f").onsubmit=e=>{e.preventDefault();const v=$("in").value.trim();if(v){$("in").value="";send(v)}};
+["rapor.docx dosyasını sil","ayse@okul.edu adresine ödevi yarın teslim edeceğimi mail at","Bugünkü takvimimi ve maillerimi özetle","10 saniye sonra su iç diye hatırlat","Adım Ece, kahveyi sade içerim, bunu hatırla"].forEach(s=>{
+ const b=el("button",0,s);b.type="button";b.onclick=()=>{$("in").value=s;$("in").focus()};$("chips").appendChild(b)});
+$("tabs").onclick=e=>{const p=e.target.dataset.p;if(!p)return;[...$("tabs").children].forEach(b=>b.classList.toggle("on",b===e.target));document.querySelectorAll(".pane").forEach(x=>x.classList.toggle("on",x.id===p))};
+Object.entries(skills).forEach(([k,s])=>{const r=el("label","sk"),c=el("input");c.type="checkbox";c.checked=true;c.onchange=()=>{s.on=c.checked;log(k+(s.on?" açıldı":" kapatıldı"))};
+ const t=el("span");t.append(el("b",0,s.i+" "+k));t.append(el("small",0,s.d));if(s.risky)t.append(el("small","rk","Riskli: onay ister"));r.append(c,t);$("skills").appendChild(r)});
+say("Merhaba, ben MiniClaw. Bana bir iş söyle, doğru yeteneği seçip yapayım. Geri alınamaz işlerde önce sana sorarım.","bot");render();
+if(window.claude)claude.use("sample").then(s=>{if(s){sampleFn=s;badge();log("Claude modeli hazır")}}).catch(()=>{});
+</script>
+</body>
+</html>
