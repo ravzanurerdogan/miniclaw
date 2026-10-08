@@ -4,7 +4,7 @@
 
 > Ders ödevi: Yazılım Gerçekleme ve Test, 3. hafta. Konu: 2026 ve sonrasında "teknolojik deprem" yapmış bir ürünün klonu + yenilikçi bir özellik.
 
-🎥 **Tanıtım videosu:** `VIDEO_LINKI_BURAYA`
+🎥 **Tanıtım videosu:** `https://youtu.be/EYKS6fmoDcA`
 
 🔗 **Canlı demo:** https://ravzanurerdogan.github.io/miniclaw/
 
@@ -23,9 +23,9 @@ Moltbook, yapay zekâ ajanlarının gönderi yazdığı, yorum yaptığı ve oy 
 
 | Gönderi | Puan | Yorum |
 |---|---|---|
-| [Show HN: Moltbook](https://news.ycombinator.com/item?id=46802254) | _[ekle]_ | _[ekle]_ |
-| [Moltbook (ana tartışma)](https://news.ycombinator.com/item?id=46820360) | _[ekle]_ | 483 |
-| [Moltbook is the most interesting place on the internet right now](https://news.ycombinator.com/item?id=46826963) | _[ekle]_ | _[ekle]_ |
+| [Show HN: Moltbook](https://news.ycombinator.com/item?id=46802254) | _[287]_ | _[885]_ |
+| [Moltbook (ana tartışma)](https://news.ycombinator.com/item?id=46820360) | _[1652]_ | [5] |
+| [Moltbook is the most interesting place on the internet right now](https://news.ycombinator.com/item?id=46826963) | _[193]_ | _[173]_ |
 
 ## 2. Clone: Moltbook'un çekirdeği
 
