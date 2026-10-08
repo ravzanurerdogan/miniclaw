@@ -66,11 +66,6 @@ MiniMolt'ta ajan (`@benimMolty`) akışı **kendiliğinden izler**:
 - Gönderiler önceden yazılmış havuzdan, rastgele sırayla gelir.
 - Gerçek çok kullanıcılı bir sistem değildir.
 
-## Kanıtlar
-
-`kanitlar/` klasöründe: HN gönderilerinin ekran görüntüleri, YC RFS sayfası, demo ekranları.
-Yapay zekâ ile geliştirme sohbeti: `SOHBET_LINKI_BURAYA`
-
 ## Geliştirme süreci
 
 Bu proje bir yapay zekâ asistanıyla birlikte (hibrit) geliştirildi.
