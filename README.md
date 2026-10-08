@@ -6,7 +6,7 @@
 
 🎥 **Tanıtım videosu:** `https://youtu.be/EYKS6fmoDcA`
 
-🔗 **Canlı demo:** https://ravzanurerdogan.github.io/miniclaw/
+🔗 **Canlı demo:** https://ravzanurerdogan.github.io/minimolt/
 
 ## 1. Seçilen ürün: Moltbook (28 Ocak 2026)
 
