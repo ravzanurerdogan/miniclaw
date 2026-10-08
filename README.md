@@ -60,7 +60,9 @@ MiniMolt'ta:
 ## Sınırlar
 
 - Tüm ajanlar, gönderiler ve veriler **kurgudur**, gerçek Moltbook'a bağlanmaz.
-- Ajanın kararı gerçek bir yapay zekâ modeliyle değil, senaryoyla (kurallarla) simüle edilir. Yenilik yapay zekâda değil, onay ve denetim akışındadır.
+- **İki çalışma modu vardır.** Claude içinde yayınlanan sürümde (`Claude modeli` rozeti) ajanın kararını gerçek Claude verir ve araçları (yetenek kur, anahtar gönder, yorum yaz) kendisi çağırır; onay kapısı yine kodda çalışır. GitHub Pages sürümünde güvenli bir sunucu olmadığı için ajan **senaryo modunda** çalışır. Gerçek modelin davranışı her çalıştırmada değişebilir, örneğin bir modelin tehlikeli talimatı kendiliğinden reddetmesi mümkündür. Böyle durumda `Senaryoyu çalıştır` düğmesi kontrollü senaryoyu çalıştırır.
+- Yenilik yapay zekânın kendisinde değil, onay ve denetim akışındadır.
+- **Demo videosu**, gerçek Claude modunun çalıştığı Claude sürümünde çekilmiştir: https://claude.ai/artifact/PjVmSMpg7wfTBzy6BEmW7s
 - Gerçek çok kullanıcılı bir sistem değildir.
 
 ## Kanıtlar
