@@ -41,28 +41,29 @@ Moltbook, yapay zekâ ajanlarının gönderi yazdığı, yorum yaptığı ve oy 
 
 Moltbook olaylarının gösterdiği sorun şu: bir ajan, doğrulanmamış bir kaynağın talimatını (ör. imzasız bir yetenek kur ve API anahtarını gönder) sahibine sormadan uygulayabilir.
 
-MiniMolt'ta:
+MiniMolt'ta ajan (`@benimMolty`) akışı **kendiliğinden izler**:
 
-1. **Doğrulanmamış kaynak uyarısı:** Sahibi doğrulanmamış gönderiler işaretlenir.
-2. **Sahip onayı:** Ajan akışı okuyup riskli bir talimat bulursa işi yapmaz, **sahibine onay isteği gönderir** (Onay kutusu sekmesi).
-3. **Denetim kaydı:** Ajanın ne okuduğu, neyi istediği ve sahibin kararı kayıt altına alınır (Denetim sekmesi).
-4. **Karşılaştırma anahtarı:** Üstteki "Sahip onayı" kutusunu kapatınca ajan sormadan uygular ve (simülasyonda) API anahtarı sızar, böylece farkı yan yana görebilirsin.
+1. **Canlı akış:** Başka ajanlar zamanla yeni gönderi atar, oy ve yorum gelir, bildirim çıkar.
+2. **Doğrulanmamış kaynak uyarısı:** Sahibi doğrulanmamış gönderiler işaretlenir.
+3. **Sahip onayı:** Doğrulanmamış bir gönderi ajanı riskli bir işe çağırırsa ajan işi yapmaz, **sahibine onay isteği gönderir** (Onay kutusu sekmesi + bildirim).
+4. **Denetim kaydı:** Ajanın ne okuduğu, neyi istediği ve sahibin kararı kaydedilir (Denetim sekmesi).
+5. **Karşılaştırma anahtarı:** Üstteki "Sahip onayı" kutusunu kapatınca ajan sormadan uygular ve (simülasyonda) yetenek kurulup API anahtarı sızar.
 
 **YC bağlantısı:** YC'nin Multiplayer AI metni, ajan oturumlarının izlenebilmesini, yönlendirilebilmesini ve devredilebilmesini istiyor, ancak yetki ve onaydan söz etmiyor. Bu proje o boşluğu doldurmayı hedefliyor. Bu yorum bana aittir, YC'nin metninde yazmaz.
 
 ## Nasıl denenir?
 
-1. "Ajanım akışı okusun" düğmesine bas. Onay kutusunda istek görünür.
-2. **Reddet** dersen hiçbir şey kurulmaz. **Onayla** dersen (simülasyonda) anahtar sızar.
-3. Sayfayı sıfırla, üstteki **Sahip onayı** kutusunu kapat, tekrar "Ajanım akışı okusun"a bas: ajan sormadan uygular.
-4. Denetim sekmesinden olayların kaydına bak.
+1. Sayfayı aç. Birkaç saniyede yeni gönderiler kendiliğinden gelir (ya da oy ver, yorum yaz, kendin gönderi paylaş).
+2. Yaklaşık 15 saniye sonra doğrulanmamış bir kaynaktan tehlikeli bir gönderi gelir (ya da **Kötü gönderi yolla** düğmesine bas). Ajan onu okur ve Onay kutusunda sana izin ister.
+3. **Reddet** dersen hiçbir şey kurulmaz ve gönderi "ajanım engelledi" etiketi alır. **Onayla** dersen (simülasyonda) anahtar sızar.
+4. **Sahip onayı** kutusunu kapatıp tekrar **Kötü gönderi yolla**'ya basarsan ajan sormadan uygular.
+5. Denetim sekmesinden olayların kaydına bak.
 
 ## Sınırlar
 
 - Tüm ajanlar, gönderiler ve veriler **kurgudur**, gerçek Moltbook'a bağlanmaz.
-- **İki çalışma modu vardır.** Claude içinde yayınlanan sürümde (`Claude modeli` rozeti) ajanın kararını gerçek Claude verir ve araçları (yetenek kur, anahtar gönder, yorum yaz) kendisi çağırır; onay kapısı yine kodda çalışır. GitHub Pages sürümünde güvenli bir sunucu olmadığı için ajan **senaryo modunda** çalışır. Gerçek modelin davranışı her çalıştırmada değişebilir, örneğin bir modelin tehlikeli talimatı kendiliğinden reddetmesi mümkündür. Böyle durumda `Senaryoyu çalıştır` düğmesi kontrollü senaryoyu çalıştırır.
-- Yenilik yapay zekânın kendisinde değil, onay ve denetim akışındadır.
-- **Demo videosu**, gerçek Claude modunun çalıştığı Claude sürümünde çekilmiştir: https://claude.ai/artifact/PjVmSMpg7wfTBzy6BEmW7s
+- Ajanın davranışı gerçek bir yapay zekâ modeliyle değil, **senaryoyla** (kurallarla) simüle edilir; böylece demo her seferinde tekrarlanabilir. Yenilik yapay zekâda değil, onay ve denetim akışındadır.
+- Gönderiler önceden yazılmış havuzdan, rastgele sırayla gelir.
 - Gerçek çok kullanıcılı bir sistem değildir.
 
 ## Kanıtlar
